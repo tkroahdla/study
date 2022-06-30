@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <body>
     <div id="root"></div>
 </body>
@@ -11,22 +10,43 @@
     const root = document.getElementById("root")
     let counter = 0;
     const App = () => {
-        const [minutes, setMinutes] = React.useState()
-        const onChange = (event) => { setMinutes(event.target.value) };
+        const [amount, setAmount] = React.useState(0)
+        const [inverted, setInverted] = React.useState(false);
+        const onChange = (event) => { setAmount(event.target.value) };
+        const reset = () => setAmount(0)
+        const onInvert = () => {
+            reset()
+            setInverted((current) => !current)
+        }
         return (
             <div>
-                <h1 className="hi">Super Converter</h1>
-                <label htmlFor="minutes">Minutes</label>
-                <input
-                    value={minutes}
-                    id="minutes"
-                    placeholder="Minutes"
-                    type="number"
-                    onChange={onChange}
-                />
-                <h4>You want to convert {minutes} </h4>
-                <label htmlFor="Hours"> Hours</label>
-                <input id="Hours" placeholder="Hours" type="number" />
+                <h1>Super Converter</h1>
+                <div>
+                    <label htmlFor="minutes">Minutes</label>
+                    <input
+                        value={inverted ? amount*60 : amount}
+                        id="minutes"
+                        placeholder="Minutes"
+                        type="number"
+                        onChange={onChange}
+                        disabled={inverted}
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="hours"> hours</label>
+                    <input
+                        value={inverted ? amount : Math.round(amount/60)}
+                        id="hours"
+                        placeholder="hours"
+                        type="number"
+                        disabled={!inverted}
+                        onChange={onChange}
+                        
+                    />
+                </div>
+                <button onClick={reset}>Reset</button>
+                <button onClick={onInvert}>{inverted ? "Turn back" : "invert"}</button>
             </div>
         )
     };
