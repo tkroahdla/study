@@ -8,13 +8,19 @@
   <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
+<<<<<<< HEAD
     function Btn({ text, fontSize = 14 }) {
+=======
+    function Btn({ text, changeValue }) {
+      console.log(text);
+>>>>>>> bd03b16cc3817531cb30a82bb1996d3075505f49
       return (
         <button
+          onClick={changeValue}
           style={{
-            backgroundColor: 'tomato',
-            color: 'white',
-            padding: '10px 20px',
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
             border: 0,
             borderRadius: 10,
             fontSize: fontSize,
@@ -24,6 +30,7 @@
         </button>
       );
     }
+    const MemorizedBtn = React.memo(Btn);
 
     Btn.propTypes = {
       text: PropTypes.string.isRequired,
@@ -31,14 +38,21 @@
     };
 
     const App = () => {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert changes");
       return (
         <div>
+<<<<<<< HEAD
           <Btn text="Save Changes" />
           <Btn fontSize={41} text={'asdf'} />
+=======
+          <MemorizedBtn text={value} changeValue={changeValue} />
+          <MemorizedBtn text="Continue" />
+>>>>>>> bd03b16cc3817531cb30a82bb1996d3075505f49
         </div>
       );
     };
-    const root = document.getElementById('root');
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
   </script>
 </html>
