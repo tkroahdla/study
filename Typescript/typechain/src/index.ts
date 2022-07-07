@@ -1,6 +1,1 @@
-class Block {
-  constructor(private date: string) {}
-  static hello() {
-    return 'hi';
-  }
-}
+import { exit, init } from './myPackage';
