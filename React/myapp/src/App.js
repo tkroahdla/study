@@ -7,11 +7,17 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
-
         <Route path="/movie/:id">
           <Detail />
         </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+
+        {/*<Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
+        <Route path="/movie/:id">
+          <Detail />
+        </Route> */}
       </Switch>
     </Router>
   );
