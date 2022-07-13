@@ -9,10 +9,21 @@ function App() {
         <Route path="/movie/:id">
           <Detail />
         </Route>
+<<<<<<< HEAD
+        <Route path="/">
+          <Home />
+        </Route>
+
+        {/*<Route path={`${process.env.PUBLIC_URL}/`} element={<Home />} />
+        <Route path="/movie/:id">
+          <Detail />
+        </Route> */}
+=======
 
         <Route path="/">
           <Home />
         </Route>
+>>>>>>> 8d57d73bd7c5f230bde1ec9d320344c1431e95b5
       </Switch>
     </Router>
   );
