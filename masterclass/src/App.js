@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 // const Box = styled.div`
 //   background-color: ${(props) => props.bgColor};
@@ -11,24 +11,32 @@ import styled from 'styled-components';
 //   border-radius: 50px;
 // `;
 
-const Father = styled.div`
+const Wrapper = styled.div`
   display: flex;
+  height: 100vh;
+  width: 100vh;
+  justify-content: center;
+  align-items: center;
 `;
 
-const Input = styled.input.attrs({ required: true })`
-  background-color: tomato;
+const anim = keyframes`
+from{
+  color:tomato;
+}
+to{
+  color:teal;
+}
+`;
+
+const Btn = styled.button`
+  animation: ${anim} 0.5s infinite;
 `;
 
 function App() {
   return (
-    <Father>
-      <Input />
-      <Input />
-      <Input />
-      <Input />
-      <Input />
-      {/* as : 스타일은 유지한채 다른 태그로 사용 */}
-    </Father>
+    <Wrapper>
+      <Btn>asdf</Btn>
+    </Wrapper>
   );
 }
 
