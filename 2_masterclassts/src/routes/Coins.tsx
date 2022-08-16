@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { fetchCoins } from '../api';
@@ -40,6 +41,9 @@ const Coin = styled.li`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  display: flex;
+  justify-content: center;
+  margin-bottom: 13px;
 `;
 
 const Loader = styled.span`
@@ -68,9 +72,11 @@ function Coins() {
   console.log(isLoading, data);
   return (
     <Container>
-      <Header>
-        <Title>Coins</Title>
-      </Header>
+      <Helmet>
+        <title>코인</title>
+      </Helmet>
+      <Title>Coins</Title>
+
       {isLoading === true ? (
         <Loader>Loading....</Loader>
       ) : (
