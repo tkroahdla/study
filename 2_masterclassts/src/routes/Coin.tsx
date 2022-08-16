@@ -1,4 +1,3 @@
-import { faMoon } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet';
 
@@ -11,7 +10,7 @@ import {
   useRouteMatch,
 } from 'react-router-dom';
 import styled from 'styled-components';
-import { fetchCoinHistory, fetchCoinInfo, fetchCoinTickers } from '../api';
+import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import Chart from './Chart';
 import Price from './Price';
 
@@ -199,7 +198,7 @@ function Coin() {
             pathname: `/`,
           }}
         >
-          <Button>🌙</Button>
+          <Button></Button>
         </Link>
 
         <Button>🌙</Button>
