@@ -2,10 +2,10 @@ import type { NextPage } from 'next';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { emitKeypressEvents } from 'readline';
-import Button from '../components/button';
-import Input from '../components/input';
-import useMutation from '../libs/client/userMutation';
-import { cls } from '../libs/server/utils';
+import Button from '@components/button';
+import Input from '@components/input';
+import useMutation from '@libs/client/userMutation';
+import { cls } from '@libs/server/utils';
 
 interface EnterForm {
   email?: string;
@@ -83,9 +83,11 @@ const Enter: NextPage = () => {
               required
             />
           ) : null}
-          {method === 'email' ? <Button text={'Get login link'} /> : null}
+          {method === 'email' ? (
+            <Button text={loading ? 'Loading' : 'Get login link'} />
+          ) : null}
           {method === 'phone' ? (
-            <Button text={submitting ? 'Loading' : 'Get one-time password'} />
+            <Button text={loading ? 'Loading' : 'Get one-time password'} />
           ) : null}
         </form>
 
