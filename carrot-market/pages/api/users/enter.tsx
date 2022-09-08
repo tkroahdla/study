@@ -1,70 +1,73 @@
+import twilio from 'twilio';
 import client from '@libs/client/client';
-import withHandler from '@libs/server/withHandler';
+import withHandler, { ResponseType } from '@libs/server/withHandler';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as emailjs from 'emailjs-com';
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+
+async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseType>
+) {
   const { phone, email } = req.body;
-  const payload = phone ? { phone: +phone } : { email };
-  const user = await client.user.upsert({
-    where: {
-      ...payload,
-      // ...(phone && { phone: +phone }), // if else랑 같음 es6
-      // ...(phone ? { phone: +phone} : {} ) // 불편하면 이거 쓰래
-    },
-    create: {
-      name: 'anonymous',
-      ...payload,
-    },
-    update: {},
-  });
+  const user = phone ? { phone: +phone } : email ? { email } : null;
+  if (!user) return res.status(400).json({ ok: false });
+  const payload = Math.floor(100000 + Math.random() * 900000) + '';
   const token = await client.token.create({
     data: {
-      payload: '1234',
+      payload,
       user: {
-        connect: {
-          id: user.id,
+        connectOrCreate: {
+          where: {
+            ...user,
+            // ...(phone && { phone: +phone }), // if else랑 같음 es6
+            // ...(phone ? { phone: +phone} : {} ) // 불편하면 이거 쓰래
+          },
+          create: {
+            name: 'anonymous',
+            ...user,
+          },
         },
       },
     },
   });
 
-  // if (email) {
-  //   console.log('found it!!!');
-  //   user = await client.user.findUnique({
-  //     where: {
-  //       email,
-  //     },
-  //   });
-  //   if (!user) {
-  //     console.log('Did not find. will create.');
-  //     user = await client.user.create({
-  //       data: {
-  //         name: 'Anonymous',
-  //         email,
-  //       },
-  //     });
-  //   }
-  //   console.log(user);
-  // }
   // if (phone) {
-  //   user = await client.user.findUnique({
-  //     where: {
-  //       phone: +phone,
-  //     },
+  //   const message = await twilioClient.messages.create({
+  //     messagingServiceSid: process.env.MSG_SERVICE_SID,
+  //     to: process.env.MYPHONE_NUM!,
+  //     body: `Your login token is ${payload} 부야!`,
   //   });
-  //   if (user) console.log('found it');
-  //   if (!user) {
-  //     console.log('Did not find. will create.');
-  //     user = await client.user.create({
-  //       data: {
-  //         name: 'Anonymous',
-  //         phone: +phone,
-  //       },
-  //     });
-  //   }
-  //   console.log(user);
+  //   console.log(message);
   // }
-  res.status(200).end();
+  // if (email) {
+  //   const templateParams = {
+  //     from_name: 'john',
+  //     from_email: 'jejedong@naver.com',
+  //     to_name: 'john',
+  //     message: '개빡친다',
+  //   };
+  //   var service_id = 'Carrot-market';
+  //   var template_id = 'template_o3inpw9';
+
+  //   await emailjs
+  //     .send(service_id, template_id, templateParams, 'GPNOtbQ0fP5NV-LHxQoIn')
+  //     .then(
+  //       ({ status }) => {
+  //         // Show success message
+  //         console.log('success!!');
+  //       },
+  //       () => {
+  //         // Show error message
+  //         console.log('errors!!');
+  //       }
+  //     );
+  // }
+
+  return res.json({
+    ok: true,
+  });
 }
 
 export default withHandler('POST', handler);
