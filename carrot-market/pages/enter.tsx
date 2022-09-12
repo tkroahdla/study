@@ -1,25 +1,34 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { emitKeypressEvents } from 'readline';
 import Button from '@components/button';
 import Input from '@components/input';
 import useMutation from '@libs/client/userMutation';
 import { cls } from '@libs/server/utils';
+import { useRouter } from 'next/router';
 
 interface EnterForm {
   email?: string;
   phone?: string;
 }
 
-interface EnterMutationResult {
+interface TokenForm {
+  token: string;
+}
+
+interface MutationResult {
   ok: boolean;
 }
 
 const Enter: NextPage = () => {
   const [enter, { loading, data, error }] =
-    useMutation<EnterMutationResult>('/api/users/enter');
+    useMutation<MutationResult>('/api/users/enter');
+  const [confirmToken, { loading: tokenLoading, data: tokenData }] =
+    useMutation<MutationResult>('/api/users/confirm');
   const { register, watch, handleSubmit, reset } = useForm<EnterForm>();
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<TokenForm>();
   const [method, setMethod] = useState<'email' | 'phone'>('email');
   const onEmailClick = () => {
     reset();
@@ -32,12 +41,38 @@ const Enter: NextPage = () => {
   const onValid = (validForm: EnterForm) => {
     enter(validForm);
   };
-  console.log(data);
+  const onTokenValid = (validForm: TokenForm) => {
+    if (tokenLoading) return;
+    confirmToken(validForm);
+  };
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push('/');
+    }
+  }, [tokenData, router]);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">Enter to Carrot</h3>
       <div className="mt-12">
-        {data.ok ? null : (
+        {data?.ok ? (
+          <form
+            onSubmit={tokenHandleSubmit(onTokenValid)}
+            className="mt-8 flex flex-col space-y-4"
+          >
+            <Input
+              register={tokenRegister('token', {
+                required: true,
+              })}
+              name="token"
+              label="Comfirmation Token"
+              type="number"
+              required
+            />
+
+            <Button text={tokenLoading ? 'Loading' : 'Confirm Token'} />
+          </form>
+        ) : (
           <>
             {' '}
             <div className="flex flex-col items-center">
