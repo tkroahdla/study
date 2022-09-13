@@ -15,19 +15,24 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const profile = await client.user.findUnique({
-    where: { id: req.session.user?.id },
-  });
-  res.json({
-    ok: true,
-    profile,
-  });
-  res.status(200).end();
+  if (req.method == 'GET') {
+    const products = await client.product.findMany({});
+    res.json({
+      ok: true,
+      products,
+    });
+  }
+  if (req.method == 'POST') {
+    const {
+      body: { name, price, desription },
+      session: { user },
+    } = req;
+  }
 }
 
 export default withApiSession(
   withHandler({
-    methods: ['GET'],
+    methods: ['GET', 'POST'],
     handler,
   })
 );
