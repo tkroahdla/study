@@ -9,9 +9,14 @@ import useSWR from 'swr';
 import products from './api/products';
 import { Product } from '@prisma/client';
 
+interface asdf extends Product {
+  _count: {
+    favs: number;
+  };
+}
 interface ProductResponse {
   ok: boolean;
-  products: Product[];
+  products: asdf[];
 }
 
 const Home: NextPage = () => {
@@ -31,8 +36,7 @@ const Home: NextPage = () => {
             key={product.id}
             title={product.name}
             price={product.price}
-            comments={1}
-            hearts={1}
+            hearts={product._count?.favs}
           />
         ))}
         <FloatingButton href="/products/upload">
