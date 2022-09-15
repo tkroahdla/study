@@ -1,14 +1,14 @@
-import type { NextPage } from 'next';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
-import Button from '../../components/button';
-import Layout from '../../components/layout';
-import { Product, User } from '@prisma/client';
-import useMutation from '@libs/client/userMutation';
-import { cls } from '@libs/server/utils';
-import useUser from '@libs/client/useUser';
+import type { NextPage } from "next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import useSWR, { useSWRConfig } from "swr";
+import Button from "../../components/button";
+import Layout from "../../components/layout";
+import { Product, User } from "@prisma/client";
+import useMutation from "@libs/client/userMutation";
+import { cls } from "@libs/server/utils";
+import useUser from "@libs/client/useUser";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -78,10 +78,10 @@ const ItemDetail: NextPage = () => {
                 <button
                   onClick={onFavoriteClick}
                   className={cls(
-                    'flex items-center justify-center rounded-md p-3',
+                    "flex items-center justify-center rounded-md p-3",
                     data?.isLiked
-                      ? ' text-red-500 hover:text-red-600'
-                      : ' text-gray-400 hover:bg-gray-100 hover:text-gray-500'
+                      ? " text-red-500 hover:text-red-600"
+                      : " text-gray-400 hover:bg-gray-100 hover:text-gray-500"
                   )}
                 >
                   {data?.isLiked ? (
@@ -118,7 +118,7 @@ const ItemDetail: NextPage = () => {
               </div>
             </div>
           ) : (
-            'Loading...'
+            "Loading..."
           )}
         </div>
         <div>

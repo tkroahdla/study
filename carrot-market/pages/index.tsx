@@ -1,13 +1,13 @@
-import type { NextPage } from 'next';
-import FloatingButton from '@components/floating-button';
-import Item from '@components/item';
-import Layout from '@components/layout';
-import '@libs/client/client';
-import useUser from '@libs/client/useUser';
-import Head from 'next/head';
-import useSWR from 'swr';
-import products from './api/products';
-import { Product } from '@prisma/client';
+import type { NextPage } from "next";
+import FloatingButton from "@components/floating-button";
+import Item from "@components/item";
+import Layout from "@components/layout";
+import "@libs/client/client";
+import useUser from "@libs/client/useUser";
+import Head from "next/head";
+import useSWR from "swr";
+import products from "./api/products";
+import { Product } from "@prisma/client";
 
 interface asdf extends Product {
   _count: {
@@ -21,7 +21,7 @@ interface ProductResponse {
 
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
-  const { data } = useSWR<ProductResponse>('/api/products');
+  const { data } = useSWR<ProductResponse>("/api/products");
   console.log(data);
 
   return (
