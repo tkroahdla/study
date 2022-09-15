@@ -1,13 +1,13 @@
-import type { NextPage } from 'next';
-import Button from '@components/button';
-import Input from '@components/input';
-import Layout from '@components/layout';
-import TextArea from '@components/textarea';
-import { useForm } from 'react-hook-form';
-import useMutation from '@libs/client/userMutation';
-import { useEffect } from 'react';
-import { Product } from '@prisma/client';
-import { useRouter } from 'next/router';
+import type { NextPage } from "next";
+import Button from "@components/button";
+import Input from "@components/input";
+import Layout from "@components/layout";
+import TextArea from "@components/textarea";
+import { useForm } from "react-hook-form";
+import useMutation from "@libs/client/userMutation";
+import { useEffect } from "react";
+import { Product } from "@prisma/client";
+import { useRouter } from "next/router";
 
 interface UploadProductForm {
   name: string;
@@ -24,7 +24,7 @@ const Upload: NextPage = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<UploadProductForm>();
   const [uploadProduct, { loading, data }] =
-    useMutation<UploadProductMutation>('/api/products');
+    useMutation<UploadProductMutation>("/api/products");
   const onValid = (data: UploadProductForm) => {
     if (loading) return;
     uploadProduct(data);
@@ -57,14 +57,14 @@ const Upload: NextPage = () => {
           </label>
         </div>
         <Input
-          register={register('name', { required: true })}
+          register={register("name", { required: true })}
           required
           label="Name"
           name="name"
           type="text"
         />
         <Input
-          register={register('price', { required: true })}
+          register={register("price", { required: true })}
           required
           label="Price"
           name="price"
@@ -72,12 +72,12 @@ const Upload: NextPage = () => {
           kind="price"
         />
         <TextArea
-          register={register('description', { required: true })}
+          register={register("description", { required: true })}
           name="description"
           label="Description"
           required
         />
-        <Button text={loading ? 'Loading...' : 'Upload item'} />
+        <Button text={loading ? "Loading..." : "Upload item"} />
       </form>
     </Layout>
   );

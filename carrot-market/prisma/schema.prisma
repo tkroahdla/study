@@ -78,7 +78,7 @@ model Answer {
   userId    Int
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
-  anwer     String   @db.MediumText
+  answer    String   @db.MediumText
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
