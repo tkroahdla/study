@@ -1,7 +1,7 @@
-import React from 'react';
-import Link from 'next/link';
-import { cls } from '../libs/server/utils';
-import { useRouter } from 'next/router';
+import React from "react";
+import Link from "next/link";
+import { cls } from "../libs/server/utils";
+import { useRouter } from "next/router";
 
 interface LayoutProps {
   title?: string;
@@ -42,19 +42,19 @@ export default function Layout({
           </button>
         ) : null}
         {title ? (
-          <span className={cls(canGoBack ? 'mx-auto' : '', '')}>{title}</span>
+          <span className={cls(canGoBack ? "mx-auto" : "", "")}>{title}</span>
         ) : null}
       </div>
-      <div className={cls('pt-12', hasTabBar ? 'pb-24' : '')}>{children}</div>
+      <div className={cls("pt-12", hasTabBar ? "pb-24" : "")}>{children}</div>
       {hasTabBar ? (
         <nav className="fixed bottom-0 flex w-full max-w-xl justify-between border-t bg-white px-10 pb-5 pt-3 text-xs text-gray-700">
           <Link href="/">
             <a
               className={cls(
-                'flex flex-col items-center space-y-2 ',
-                router.pathname === '/'
-                  ? 'text-orange-500'
-                  : 'transition-colors hover:text-gray-500'
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/"
+                  ? "text-orange-500"
+                  : "transition-colors hover:text-gray-500"
               )}
             >
               <svg
@@ -77,10 +77,10 @@ export default function Layout({
           <Link href="/community">
             <a
               className={cls(
-                'flex flex-col items-center space-y-2 ',
-                router.pathname === '/community'
-                  ? 'text-orange-500'
-                  : 'transition-colors hover:text-gray-500'
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/community"
+                  ? "text-orange-500"
+                  : "transition-colors hover:text-gray-500"
               )}
             >
               <svg
@@ -103,10 +103,10 @@ export default function Layout({
           <Link href="/chats">
             <a
               className={cls(
-                'flex flex-col items-center space-y-2 ',
-                router.pathname === '/chats'
-                  ? 'text-orange-500'
-                  : 'transition-colors hover:text-gray-500'
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/chats"
+                  ? "text-orange-500"
+                  : "transition-colors hover:text-gray-500"
               )}
             >
               <svg
@@ -126,13 +126,13 @@ export default function Layout({
               <span>채팅</span>
             </a>
           </Link>
-          <Link href="/live">
+          <Link href="/streams">
             <a
               className={cls(
-                'flex flex-col items-center space-y-2 ',
-                router.pathname === '/live'
-                  ? 'text-orange-500'
-                  : 'transition-colors hover:text-gray-500'
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/live"
+                  ? "text-orange-500"
+                  : "transition-colors hover:text-gray-500"
               )}
             >
               <svg
@@ -155,10 +155,10 @@ export default function Layout({
           <Link href="/profile">
             <a
               className={cls(
-                'flex flex-col items-center space-y-2 ',
-                router.pathname === '/profile'
-                  ? 'text-orange-500'
-                  : 'transition-colors hover:text-gray-500'
+                "flex flex-col items-center space-y-2 ",
+                router.pathname === "/profile"
+                  ? "text-orange-500"
+                  : "transition-colors hover:text-gray-500"
               )}
             >
               <svg
