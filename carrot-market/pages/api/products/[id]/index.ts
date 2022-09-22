@@ -1,7 +1,7 @@
-import withHandler, { ResponseType } from '@libs/server/withHandler';
-import { NextApiRequest, NextApiResponse } from 'next';
-import client from '@libs/client/client';
-import { withApiSession } from '@libs/server/withSession';
+import withHandler, { ResponseType } from "@libs/server/withHandler";
+import { NextApiRequest, NextApiResponse } from "next";
+import client from "@libs/server/client";
+import { withApiSession } from "@libs/server/withSession";
 
 async function handler(
   req: NextApiRequest,
@@ -29,7 +29,7 @@ async function handler(
     },
   });
   // 이름 쪼개기
-  const terms = product?.name.split(' ').map((word) => ({
+  const terms = product?.name.split(" ").map((word) => ({
     name: {
       contains: word,
     },
@@ -67,7 +67,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    methods: ['GET'],
+    methods: ["GET"],
     handler,
   })
 );

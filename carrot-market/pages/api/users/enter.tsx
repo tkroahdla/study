@@ -1,7 +1,7 @@
-import twilio from 'twilio';
-import client from '@libs/client/client';
-import withHandler, { ResponseType } from '@libs/server/withHandler';
-import { NextApiRequest, NextApiResponse } from 'next';
+import twilio from "twilio";
+import client from "@libs/server/client";
+import withHandler, { ResponseType } from "@libs/server/withHandler";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
@@ -12,7 +12,7 @@ async function handler(
   const { phone, email } = req.body;
   const user = phone ? { phone: phone } : email ? { email } : null;
   if (!user) return res.status(400).json({ ok: false });
-  const payload = Math.floor(100000 + Math.random() * 900000) + '';
+  const payload = Math.floor(100000 + Math.random() * 900000) + "";
   const token = await client.token.create({
     data: {
       payload,
@@ -24,7 +24,7 @@ async function handler(
             // ...(phone ? { phone: +phone} : {} ) // 불편하면 이거 쓰래
           },
           create: {
-            name: 'anonymous',
+            name: "anonymous",
             ...user,
           },
         },
@@ -37,4 +37,4 @@ async function handler(
   });
 }
 
-export default withHandler({ methods: ['POST'], handler, isPrivate: false });
+export default withHandler({ methods: ["POST"], handler, isPrivate: false });

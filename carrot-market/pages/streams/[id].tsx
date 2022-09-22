@@ -7,7 +7,7 @@ import { Stream } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/userMutation";
 import useUser from "@libs/client/useUser";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface StreamMessage {
   message: string;
@@ -31,11 +31,14 @@ interface MessageForm {
   message: string;
 }
 
-const Asdf: NextPage = () => {
+const Streams: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
   const { data, mutate } = useSWR<StreamResponse>(
-    router.query.id ? `/api/streams/${router.query.id}` : null
+    router.query.id ? `/api/streams/${router.query.id}` : null,
+    {
+      refreshInterval: 1000,
+    }
   );
 
   const [sendMassage, { loading, data: sendMessageData }] = useMutation(
@@ -46,14 +49,28 @@ const Asdf: NextPage = () => {
   const onValid = (form: MessageForm) => {
     if (loading) return;
     reset();
-    sendMassage(form);
+    mutate(
+      (prev) =>
+        prev && {
+          ...prev,
+          stream: {
+            ...prev.stream,
+            messages: [
+              ...prev.stream.messages,
+              {
+                id: Date.now(),
+                message: form.message,
+                user: {
+                  ...user,
+                },
+              },
+            ],
+          },
+        },
+      false
+    );
+    // sendMassage(form);
   };
-
-  useEffect(() => {
-    if (sendMessageData && sendMessageData.ok) {
-      mutate();
-    }
-  }, [sendMessageData, mutate]);
 
   return (
     <Layout canGoBack>
@@ -72,7 +89,7 @@ const Asdf: NextPage = () => {
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
 
           <div className="h-[50vh] space-y-4 overflow-y-scroll py-10  px-4 pb-16">
-            {data?.stream.messages.map((message) => (
+            {data?.stream?.messages?.map((message) => (
               <Message
                 key={message.id}
                 message={message.message}
@@ -103,4 +120,4 @@ const Asdf: NextPage = () => {
   );
 };
 
-export default Asdf;
+export default Streams;

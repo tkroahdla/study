@@ -1,6 +1,6 @@
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "@libs/client/client";
+import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
 
 async function handler(
@@ -27,7 +27,10 @@ async function handler(
     });
     return res.status(200).json({ ok: true, stream });
   } else if (req.method === "GET") {
-    const streams = await client.stream.findMany();
+    const streams = await client.stream.findMany({
+      take: 10,
+      skip: 20,
+    });
     res.json({ ok: true, streams });
   }
 }
