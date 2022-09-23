@@ -15,19 +15,44 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const profile = await client.user.findUnique({
-    where: { id: req.session.user?.id },
-  });
-  res.json({
-    ok: true,
-    profile,
-  });
-  res.status(200).end();
+  const {
+    body: { email, phone, name, avatarId },
+    session: { user },
+  } = req;
+
+  if (req.method === "POST") {
+    const profileUpdate = await client.user.update({
+      where: {
+        id: 2,
+      },
+      data: {
+        email,
+        phone,
+        name,
+        avatar,
+      },
+    });
+
+    res.json({
+      ok: true,
+    });
+  }
+
+  if (req.method === "GET") {
+    const profile = await client.user.findUnique({
+      where: { id: req.session.user?.id },
+    });
+    res.json({
+      ok: true,
+      profile,
+    });
+    res.status(200).end();
+  }
 }
 
 export default withApiSession(
   withHandler({
-    methods: ["GET"],
+    methods: ["GET", "POST"],
     handler,
   })
 );

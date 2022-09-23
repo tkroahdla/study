@@ -4,14 +4,55 @@ import Input from "@components/input";
 import Layout from "@components/layout";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import useUser from "@libs/client/useUser";
+import useMutation from "@libs/client/userMutation";
 
 const EditProfile: NextPage = () => {
-  const { register, handleSubmit, watch } = useForm();
-  const onValid = (form: any) => {
-    console.log(form);
+  const { register, handleSubmit, watch, setValue, setError } = useForm();
+  const { user } = useUser();
+  const [updateUser, { loading, data }] = useMutation(`/api/users/me`);
+  const onValid = async ({ email, phone, name, avatar }: any) => {
+    if (email === "" && phone === "" && name === "") {
+      if (loading) return;
+      return setError("formErrors", {
+        message: "Email OR Phone number are required. You need to choose one.",
+      });
+    }
+    if (avatar && avatar.length > 0 && user) {
+      const { uploadURL } = await (await fetch(`/api/files`)).json();
+
+      const form = new FormData();
+      //현재는 1개만 선택할 수 있으니까 avatar[0]
+      //파일이름이 3번째 인자
+      form.append("file", avatar[0], user?.id + "");
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: "POST",
+          body: form,
+        })
+      ).json();
+
+      updateUser({
+        email,
+        phone,
+        name,
+        avatarId: id,
+      });
+    } else {
+      updateUser({
+        email,
+        phone,
+        name,
+      });
+    }
+    console.log("누름");
+    console.log(email, phone, name, avatar);
   };
   const [avatarPreview, setAvatarPreview] = useState("");
   const avatar = watch("avatar");
+
   useEffect(() => {
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
@@ -46,8 +87,23 @@ const EditProfile: NextPage = () => {
             />
           </label>
         </div>
-        <Input required label="Email address" name="email" type="email" />
         <Input
+          register={register("name")}
+          required
+          label="name"
+          name="name"
+          type="text"
+          kind="text"
+        />
+        <Input
+          register={register("email")}
+          required
+          label="Email address"
+          name="email"
+          type="email"
+        />
+        <Input
+          register={register("phone")}
           required
           label="Phone number"
           name="phone"
