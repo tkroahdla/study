@@ -34,7 +34,7 @@ export default function App() {
     setCity(location[0].city);
 
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}`
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
     );
     const json = await response.json();
     console.log(json);
@@ -42,7 +42,11 @@ export default function App() {
   };
   useEffect(() => {
     getWeather();
-  });
+  }, []);
+
+  useEffect(() => {
+    console.log("days", days);
+  }, [days]);
 
   return (
     <>
@@ -63,7 +67,17 @@ export default function App() {
               <Text style={styles.loading}>loading...</Text>
             </View>
           ) : (
-            <View style={styles.day}></View>
+            days.map((day, index) => (
+              <View key={index} style={styles.day}>
+                <Text style={styles.temp}>
+                  {parseFloat(day.temp.day).toFixed(1)}
+                </Text>
+                <Text style={styles.desc}>{day.weather[0].main}</Text>
+                <Text style={styles.tinyText}>
+                  {day.weather[0].description}
+                </Text>
+              </View>
+            ))
           )}
         </ScrollView>
       </View>
@@ -101,5 +115,8 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: 30,
     fontSize: 30,
+  },
+  tinyText: {
+    fontSize: 20,
   },
 });
