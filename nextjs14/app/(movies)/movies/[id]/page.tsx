@@ -8,12 +8,12 @@ export default async function MovieDetail({
     const id = (await params).id;
 
     return <div>
-        <Suspense>
+        test Text
+        <Suspense fallback={<h1>Loading movie info</h1>}>
             <MovieInfo id={id} />
         </Suspense>
-        <Suspense>
+        <Suspense fallback={<h1>Loading movie videos</h1>}>
             <MovieVideos id={id} />
         </Suspense>
-
     </div>
 }
